@@ -1,0 +1,27 @@
+import time as t
+import json
+import AWSIoTPythonSDK.MQTTLib as AWSIoTPyMQTT
+
+ENDPOINT = "***" #endpoint
+CLIENT_ID = "**" #ClientID
+PATH_TO_CERT = "**" #Certification Path
+PATH_TO_KEY = "**" #PrivetKey Path
+PATH_TO_ROOT = "**" #root
+MESSAGE = "Hello, it's AsmaSaleh from python code"
+TOPIC = "test/testing"
+RANGE = 20
+
+myAWSIoTMQTTClient = AWSIoTPyMQTT.AWSIoTMQTTClient(CLIENT_ID)
+myAWSIoTMQTTClient.configureEndpoint(ENDPOINT, 8883)
+myAWSIoTMQTTClient.configureCredentials(PATH_TO_ROOT, PATH_TO_KEY, PATH_TO_CERT)
+
+myAWSIoTMQTTClient.connect()
+print('Begin Publish')
+for i in range (RANGE):
+    data = "{} [{}]".format(MESSAGE, i+1)
+    message = {"message" : data}
+    myAWSIoTMQTTClient.publish(TOPIC, json.dumps(message), 1) 
+    print("Published: '" + json.dumps(message) + "' to the topic: " + "'test/testing'")
+    t.sleep(0.1)
+print('Publish End')
+myAWSIoTMQTTClient.disconnect()
