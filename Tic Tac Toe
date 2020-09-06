@@ -1,0 +1,96 @@
+from random import randrange
+global b
+q=[[0 for i in range(3)]for j in range(3)]
+num=1
+for i in range(3):
+    for j in range(3):
+        q[i][j]=num
+        num+=1
+b=[[0 for i in range(3)]for j in range(3)]
+num=1
+for i in range(3):
+    for j in range(3):
+        b[i][j]=num
+        num+=1
+b[1][1]="X"
+def displayboard():
+    for i in range(3):
+        print("+-------+-------+-------+")
+        for j in range(3):
+            if j==1:
+                print("|   " ,b[i][0],     "|   " ,b[i][1],      "|   " ,b[i][2],        "|")
+            else:
+                print("|       |       |       |")       
+    print("+-------+-------+-------+")
+def yourmove(num):   
+    for r in range(3):
+        for s in range(3):
+            if b[r][s]== num:
+                b[r][s]="O"
+    displayboard()
+def computermove(dig):
+    for r in range(3):
+        for s in range(3):
+            if b[r][s]== dig:
+                b[r][s]="X"
+    displayboard()
+def checdigorn(dn):
+    if dn>0 and dn<10:
+        for w in range(3):
+            for z in range(3):
+                if q[w][z]== dn:
+                    ourlocation=b[w][z]
+        if ourlocation !="O" and ourlocation!="X":
+            return True
+        else:
+            return False
+    return False
+        
+
+def chek():
+    for s in range(3):
+        if b[s][0]=="O" and b[s][1]=="O" and b[s][2]=="O":
+            return "Your Win"
+        elif b[s][0]=="X" and b[s][1]=="X" and b[s][2]=="X":
+            return "Computer Win"
+        elif b[0][s]=="O" and b[1][s]=="O" and b[2][s]=="O":
+            return "Your Win"
+        elif b[0][s]=="X" and b[1][s]=="X" and b[2][s]=="X":
+            return "Computer Win"
+    if b[0][0]=="O" and b[1][1]=="O" and b[2][2]=="O":
+        return "Your Win"
+    elif b[0][2]=="O" and b[1][1]=="O" and b[2][0]=="O":
+        return "Your Win"
+    elif b[0][0]=="X" and b[1][1]=="X" and b[2][2]=="X":
+        return "Computer Win"
+    elif b[0][2]=="X" and b[1][1]=="X" and b[2][0]=="X":
+        return "Computer Win"
+    
+displayboard()
+H=True
+while H==True:
+    n=int(input("Enter Your Move!"))
+    R=checdigorn(n)
+    if R==True:
+         yourmove(n)
+         ch=chek()
+         if ch != None:
+             print(ch)
+             H=False
+             break
+    else:
+        break
+    d=randrange(10)
+    R=checdigorn(d)
+    while R==False:
+         d=randrange(10)
+         R=checdigorn(d)
+    computermove(d)
+    print(d)
+    ch=chek()
+    if ch != None:
+        print(ch)
+        H=False
+    else:
+        H=True
+
